@@ -4,7 +4,7 @@ function UserList() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('https://be-xdudweb.onrender.com/BASE_API/users')
+    fetch('https://be-xdudweb.onrender.com/users')
       .then(res => res.json())
       .then(data => setUsers(data))
       .catch(err => console.error("Lỗi fetch data:", err));
