@@ -1,18 +1,19 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import UserList from './qluser'; // Import file bạn vừa viết
+import { useState } from "react";
+import { getUser, clearUser, isAdmin } from "./api";
+import Login     from "./pages/Login";
+import AdminPage from "./pages/AdminPage";
+import UserPage  from "./pages/UserPage";
+import "./styles/global.css";
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* Đây chính là chỗ tạo ra đường dẫn BASE_FE/users cho thầy nè */}
-        <Route path="/users" element={<UserList />} />
-        
-        {/* Trang mặc định khi mới vào link Vercel */}
-        <Route path="/" element={<h2>Chào mừng thầy đến với bài tập của nhóm!</h2>} />
-      </Routes>
-    </BrowserRouter>
-  );
+export default function App() {
+  const [user, setUser] = useState(() => getUser()); // khôi phục session
+
+  const handleLogin  = (u) => setUser(u);
+  const handleLogout = () => { clearUser(); setUser(null); };
+
+  if (!user) return <Login onLogin={handleLogin} />;
+
+  return isAdmin(user)
+    ? <AdminPage user={user} onLogout={handleLogout} />
+    : <UserPage  user={user} onLogout={handleLogout} />;
 }
-
-export default App;
