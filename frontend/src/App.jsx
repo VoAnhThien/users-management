@@ -6,7 +6,7 @@ import UserPage  from "./pages/UserPage";
 import "./styles/global.css";
 
 export default function App() {
-  const [user, setUser] = useState(() => getUser()); // khôi phục session
+  const [user, setUser] = useState(() => getUser()); 
 
   const handleLogin  = (u) => setUser(u);
   const handleLogout = () => { clearUser(); setUser(null); };

@@ -1,20 +1,12 @@
-// Dev + preview trên localhost: gọi /api → Vite proxy sang Render (tránh CORS).
-// Build deploy domain khác: gọi thẳng BE (cần BE bật CORS + origin cụ thể nếu dùng credentials).
-const useLocalProxy =
-  import.meta.env.DEV ||
-  (typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1"));
-const BASE = useLocalProxy
-  ? "/api"
-  : "https://be-xdudweb.onrender.com/api";
+
+const BASE = "https://be-xdudweb.onrender.com/api";
+
 
 // ─── User session (không có token, BE dùng session/cookie) ───────────────────
 export const getUser   = () => { try { return JSON.parse(localStorage.getItem("user")); } catch { return null; } };
 export const setUser   = (u) => localStorage.setItem("user", JSON.stringify(u));
 export const clearUser = ()  => localStorage.removeItem("user");
 
-// Dùng để check role: BE trả "ROLE_ADMIN" hoặc "ROLE_USER"
 export const isAdmin = (user) =>
   user?.role === "ROLE_ADMIN" || user?.role === "admin";
 

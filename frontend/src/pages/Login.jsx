@@ -25,9 +25,8 @@ export default function Login({ onLogin }) {
     try {
       const data = await authAPI.login(loginForm);
 
-      // BE trả về: { message: "Login successful", user: { id, name, role, username } }
       const user = data?.user ?? data;
-
+      localStorage.setItem("user", JSON.stringify(user));
       if (!user?.username) throw new Error("Phản hồi từ server không hợp lệ");
 
       setUser(user);
