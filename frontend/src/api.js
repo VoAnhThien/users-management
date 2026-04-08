@@ -1,8 +1,6 @@
 
 const BASE = "https://be-xdudweb.onrender.com/api";
 
-
-// ─── User session (không có token, BE dùng session/cookie) ───────────────────
 export const getUser   = () => { try { return JSON.parse(localStorage.getItem("user")); } catch { return null; } };
 export const setUser   = (u) => localStorage.setItem("user", JSON.stringify(u));
 export const clearUser = ()  => localStorage.removeItem("user");
@@ -39,7 +37,6 @@ async function req(path, options = {}) {
     clearTimeout(t);
   }
 
-  // 401 trên login/register = sai tài khoản (cần báo lỗi), không phải hết session
   const isAuthAttempt =
     path === "/auth/login" || path === "/auth/register";
   if (res.status === 401 && !isAuthAttempt) {
@@ -58,7 +55,6 @@ async function req(path, options = {}) {
   return data;
 }
 
-// ─── Normalize list response ──────────────────────────────────────────────────
 export function toList(data) {
   if (Array.isArray(data)) return data;
   if (data?.data && Array.isArray(data.data)) return data.data;
