@@ -108,7 +108,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: rgb(17, 17, 226);
   color: #fff;
 }
 

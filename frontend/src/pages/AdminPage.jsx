@@ -50,12 +50,23 @@ function SinhVienTab({ toast }) {
   const save = async () => {
   setSaving(true);
   try {
+    const normalizedMssv = (form.mssv || "").trim();
+    const duplicated = rows.some(
+      (r) => (r?.mssv || "").trim().toLowerCase() === normalizedMssv.toLowerCase()
+    );
+
+    if (mode === "add" && duplicated) {
+      toast(`MSSV ${normalizedMssv} đã tồn tại`, "warn");
+      return;
+    }
+
     const { lop, ...rest } = form;
     
-    // ⬇️ GỬI OBJECT LOP THAY VÌ CHỈ STRING
-    const payload = { 
-      ...rest, 
-      lop: lop ? { malop: lop } : null  // ⬅️ GỬI OBJECT
+    
+    const payload = {
+      ...rest,
+      mssv: normalizedMssv,
+      lop: lop ? { malop: lop } : null  
     };
 
     if (mode === "add")  await studentAPI.create(payload);
@@ -271,7 +282,7 @@ function LopTab({ toast }) {
       </div>
       <div className="table-card">
         {loading?<div className="empty-state"><Spinner/></div>
-        :filtered.length===0?<div className="empty-state"><span className="icon">🏫</span><p>Không có dữ liệu</p></div>
+        :filtered.length===0?<div className="empty-state"><span className="icon"></span><p>Không có dữ liệu</p></div>
         :(
           <table className="data-table">
             <thead><tr>{["#","Mã lớp","Tên lớp",""].map(h=><th key={h}>{h}</th>)}</tr></thead>
@@ -370,7 +381,7 @@ function MonHocTab({ toast }) {
       </div>
       <div className="table-card">
         {loading?<div className="empty-state"><Spinner/></div>
-        :filtered.length===0?<div className="empty-state"><span className="icon">📚</span><p>Không có dữ liệu</p></div>
+        :filtered.length===0?<div className="empty-state"><span className="icon"></span><p>Không có dữ liệu</p></div>
         :(
           <table className="data-table">
             <thead><tr>{["#","Mã MH","Tên môn học","Tiết LT","Tiết TH",""].map(h=><th key={h}>{h}</th>)}</tr></thead>
@@ -574,10 +585,10 @@ function DiemTab({ toast }) {
    ADMIN LAYOUT
 ════════════════════════════════════════════════════════════════ */
 const TABS = [
-  {id:"sinhvien",label:"Sinh Viên",icon:"🎓"},
-  {id:"lop",     label:"Lớp",      icon:"🏫"},
-  {id:"monhoc",  label:"Môn Học",  icon:"📚"},
-  {id:"diem",    label:"Điểm",     icon:"📊"},
+  {id:"sinhvien",label:"Sinh Viên",icon:""},
+  {id:"lop",     label:"Lớp",      icon:""},
+  {id:"monhoc",  label:"Môn Học",  icon:""},
+  {id:"diem",    label:"Điểm",     icon:""},
 ];
 
 export default function AdminPage({ user, onLogout }) {
