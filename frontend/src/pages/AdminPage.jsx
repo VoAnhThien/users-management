@@ -250,8 +250,20 @@ function LopTab({ toast }) {
   const save=async()=>{
     setSaving(true);
     try{
-      if(mode==="add") await lopAPI.create(form);
-      if(mode==="edit") await lopAPI.update(sel.malop,form);
+      const normalizedMalop = (form.malop || "").trim();
+      const duplicated = rows.some(
+        (r) => getMalop(r?.malop).trim().toLowerCase() === normalizedMalop.toLowerCase()
+      );
+
+      if(mode==="add" && duplicated){
+        toast(`Mã lớp ${normalizedMalop} đã tồn tại`, "warn");
+        return;
+      }
+
+      const payload = { ...form, malop: normalizedMalop };
+
+      if(mode==="add") await lopAPI.create(payload);
+      if(mode==="edit") await lopAPI.update(sel.malop,payload);
       toast(mode==="add"?"Thêm lớp thành công!":"Cập nhật thành công!");
       setMode(null);load();
     }catch(e){toast(e.message,"error");}
