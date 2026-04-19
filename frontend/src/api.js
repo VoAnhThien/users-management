@@ -74,6 +74,7 @@ export const authAPI = {
 
 // ─── Students ─────────────────────────────────────────────────────────────────
 export const studentAPI = {
+  getProfile: ()  => req("/students/profile"),
   getAll: ()      => req("/students"),
   create: (body)  => req("/students",      { method: "POST",   body: JSON.stringify(body) }),
   update: (id, b) => req(`/students/${id}`,{ method: "PUT",    body: JSON.stringify(b) }),
@@ -102,3 +103,10 @@ export const diemAPI = {
   create:  (body)                  => req("/grades", { method: "POST", body: JSON.stringify(body) }),
   update:  (mssv, mamh, lan, body) => req(`/grades/${mssv}/${mamh}/${lan}`, { method: "PUT", body: JSON.stringify(body) }),
 };
+
+// ─── Chuyển Lớp ───────────────────────────────────────────────────────────────
+export const transferAPI = {
+  submit:     (body) => req("/transfer/submit",  { method: "POST", body: JSON.stringify(body) }),
+  getPending: ()     => req("/transfer/pending"),
+  approve:    (id)   => req(`/transfer/approve/${id}`, { method: "PUT" }),
+};
